@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp</title>
+    <!-- Fuente letra -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- mapa de eventos -->
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+    />
+</head>
+<body>
+    <header class="primero">
+        <nav class="nav">
+            <a class="logo-nav" href="#">
+                <img src="imagenes/Logo/LOGO.png" alt="LevelUp"/>
+                <span>LevelUp</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#comunidad">Comunidad</a></li>
+                <li><a href="#eventos">Eventos</a></li>
+                <li><a href="#contacto">Soporte</a></li>
+            </ul>
+            <a class="btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/56912345678?text=Hola%20vengo%20desde%20LevelUp%20y%20necesito%20soporte%20técnico.">
+                    WhatsApp soporte
+            </a>
+        </nav>
+
+        <section class="segundo">
+            <h1>Tienda De Articulos Gamer</h1>
+            <p>Ofertas, noticias gamer, guías y eventos para ganar puntos LevelUp.</p>
+            <div class="filters">
+                <input id="q" type="search" placeholder="Buscar producto..." aria-label="Buscar producto" />
+                <select id="category" aria-label="Filtrar por categoría">
+                <option value="all">Todas las categorías</option>
+                <option>Juegos de Mesa</option>
+                <option>Accesorios</option>
+                <option>Consolas</option>
+                <option>Computadores Gamers</option>
+                <option>Sillas Gamers</option>
+                <option>Mouse</option>
+                <option>Mousepad</option>
+                <option>Poleras Personalizadas</option>
+                <option>Polerones Gamers Personalizados</option>
+                </select>
+                <button id="btnShare" class="btn-accent">Compartir</button>
+            </div>
+        </section>
+    </header>
+
+    <main>
+        <section id="Productos" class="section">
+            <h2 class="section-title">Productos</h2>
+            <p class="section-subtitle">Filtra por categoría, busca por nombre o código.</p>
+            <div class="grid">
+                <article class="card"
+                data-name="Catan"
+                data-code="JM001"
+                data-category="Juegos de Mesa">
+                <div class="media">
+                    <img src="imagenes/JuegosDeMesa/imagen_2025-09-06_023241419.avif" alt="Catan">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Juegos de Mesa</span>
+                    <h3><a href="product.html?code=JM001">Catan</a></h3>
+                    <div class="price">$29.990</div>
+                    <div class="meta">Código: JM001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="Carcassonne"
+                data-code="JM002"
+                data-category="Juegos de Mesa">
+                <div class="media">
+                    <img src="imagenes/JuegosDeMesa/carcassonne1.avif" alt="Carcassonne">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Juegos de Mesa</span>
+                    <h3><a href="product.html?code=JM002">Carcassonne</a></h3>
+                    <div class="price">$24.990</div>
+                    <div class="meta">Código: JM002</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="Control Xbox Series X"
+                data-code="AC001"
+                data-category="Accesorios">
+                <div class="media">
+                    <img src="imagenes/Accesorios/conxbox1.avif" alt="Control Xbox Series X">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Accesorios</span>
+                    <h3><a href="product.html?code=AC001">Control Xbox Series X</a></h3>
+                    <div class="price">$59.990</div>
+                    <div class="meta">Código: AC001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="HyperX Cloud II"
+                data-code="AC002"
+                data-category="Accesorios">
+                <div class="media">
+                    <img src="imagenes/Accesorios/hyper1.avif" alt="HyperX Cloud II">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Accesorios</span>
+                    <h3><a href="product.html?code=AC002">HyperX Cloud II</a></h3>
+                    <div class="price">$79.990</div>
+                    <div class="meta">Código: AC002</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="PlayStation 5"
+                data-code="CO001"
+                data-category="Consolas">
+                <div class="media">
+                    <img src="imagenes/Consolas/play51.avif" alt="PlayStation 5">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Consolas</span>
+                    <h3><a href="product.html?code=CO001">PlayStation 5</a></h3>
+                    <div class="price">$549.990</div>
+                    <div class="meta">Código: CO001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="PC Gamer ASUS ROG Strix"
+                data-code="CG001"
+                data-category="Computadores Gamers">
+                <div class="media">
+                    <img src="imagenes/ComputadoresGamers/gamer1.avif" alt="PC Gamer ASUS ROG Strix">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Computadores Gamers</span>
+                    <h3><a href="product.html?code=CG001">PC Gamer ASUS ROG Strix</a></h3>
+                    <div class="price">$1.299.990</div>
+                    <div class="meta">Código: CG001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="Secretlab Titan"
+                data-code="SG001"
+                data-category="Sillas Gamers">
+                <div class="media">
+                    <img src="imagenes/SillasGamers/silla1.avif" alt="Secretlab Titan">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Sillas Gamers</span>
+                    <h3><a href="product.html?code=SG001">Secretlab Titan</a></h3>
+                    <div class="price">$349.990</div>
+                    <div class="meta">Código: SG001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="Logitech G502 HERO"
+                data-code="MS001"
+                data-category="Mouse">
+                <div class="media">
+                    <img src="imagenes/Mouse/mousel1.avif" alt="Logitech G502 HERO">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Mouse</span>
+                    <h3><a href="product.html?code=MS001">Logitech G502 HERO</a></h3>
+                    <div class="price">$49.990</div>
+                    <div class="meta">Código: MS001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="Razer Goliathus Chroma"
+                data-code="MP001"
+                data-category="Mousepad">
+                <div class="media">
+                    <img src="imagenes/Mousepad/mpad1.avif" alt="Razer Goliathus Chroma">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Mousepad</span>
+                    <h3><a href="product.html?code=MP001">Razer Goliathus Chroma</a></h3>
+                    <div class="price">$29.990</div>
+                    <div class="meta">Código: MP001</div>
+                </div>
+                </article>
+
+                <article class="card"
+                data-name="Polera 'Level-Up'"
+                data-code="PP001"
+                data-category="Poleras Personalizadas">
+                <div class="media">
+                    <img src="imagenes/PolerasPersonalizadas/lvlup1.avif" alt="Polera Level-Up">
+                </div>
+                <div class="content" style="padding:12px;">
+                    <span class="badge">Poleras Personalizadas</span>
+                    <h3><a href="product.html?code=PP001">Polera 'Level-Up'</a></h3>
+                    <div class="price">$14.990</div>
+                    <div class="meta">Código: PP001</div>
+                </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="comunidad" class="section section-alt">
+            <h2 class="section-title">Comunidad & Guías</h2>
+                <div class="grid grid-3">
+                <article class="card-post">
+                    <h3>Noticias Gamer</h3>
+                    <p>Actualizaciones semanales con lanzamientos, parches y torneos.</p>
+                    <a class="link" href="#" aria-disabled="true">Próximamente</a>
+                </article>
+                <article class="card-post">
+                    <h3>Guías</h3>
+                    <p>Consejos para optimizar tu setup, rendimiento y accesibilidad.</p>
+                    <a class="link" href="#" aria-disabled="true">Próximamente</a>
+                </article>
+                <article class="card-post">
+                    <h3>Impacto Comunitario</h3>
+                    <p>Conoce cómo tus compras apoyan eventos locales y comunidades gamer.</p>
+                    <a class="link" href="#" aria-disabled="true">Próximamente</a>
+                </article>
+            </div>
+        </section>
+            <!-- mapa eventos -->
+        <section id="eventos" class="section">
+            <h2 class="section-title">Eventos con puntos LevelUp</h2>
+            <p class="section-subtitle">Mapa nacional de eventos gamer (ejemplo sin backend).</p>
+            <div id="map" class="map"></div>
+            <div class="event-list" id="eventList"></div>
+        </section>
+
+        <section id="contacto" class="section section-alt">
+            <h2 class="section-title">Soporte Técnico</h2>
+            <form id="supportForm" novalidate class="form">
+                <div class="field">
+                    <label for="name">Nombre</label>
+                    <input id="name" name="name" required minlength="3" maxlength="60" />
+                    <small class="error"></small>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" required />
+                    <small class="error"></small>
+                </div>
+                <div class="field">
+                    <label for="issue">Descripción del problema</label>
+                    <textarea id="issue" name="issue" required minlength="10" maxlength="500"></textarea>
+                    <small class="error"></small>
+                </div>
+                <div class="field">
+                    <label for="order">Código de producto (opcional)</label>
+                    <input id="order" name="order" pattern="[A-Z]{2,3}[0-9]{3}" placeholder="Ej: JM001" />
+                    <small class="hint">Formato: 2-3 letras + 3 números (p. ej., JM001).</small>
+                    <small class="error"></small>
+                </div>
+                <button type="submit" class="btn-accent">Enviar</button>
+                <a class="btn-outline" target="_blank" rel="noopener"
+                    href="https://wa.me/56912345678?text=Hola%20necesito%20soporte%20técnico.">Chatear por WhatsApp</a>
+            </form>
+        </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 LevelUp. Hecho para la comunidad gamer en Chile.</p>
+  </footer>
+
+</body>
+</html>

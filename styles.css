@@ -1,0 +1,343 @@
+/* =========================
+   LevelUp – styles.css
+   Paleta y tipografías:
+   - Fondo: #000000
+   - Acentos: #1E90FF (azul), #39FF14 (verde)
+   - Texto: #FFFFFF (principal), #D3D3D3 (secundario)
+   - Fuentes: Roboto (base), Orbitron (encabezados)
+========================= */
+
+:root{
+  --bg:#000000;
+  --text:#FFFFFF;
+  --text-2:#D3D3D3;
+  --blue:#1E90FF;
+  --green:#39FF14;
+  --card:#0f1115;
+  --card-2:#141820;
+  --radius:18px;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  --border: rgba(255,255,255,.08);
+}
+
+*{ box-sizing: border-box; }
+html, body{ height:100%; }
+body{
+    margin:0;
+    font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+}
+
+/* ----------------- Header / Nav ----------------- */
+.primero{ 
+    position: sticky;
+    top: 0; z-index: 50;
+    backdrop-filter: blur(6px) saturate(1.1);
+    background: rgba(0,0,0,.72);
+    border-bottom: 1px solid var(--border);
+}
+
+.nav{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 16px;
+    display: flex; align-items: center;
+    gap: 20px;
+}
+
+.logo-nav{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; text-decoration: none;
+    color: var(--text);
+    font-family: Orbitron, sans-serif; font-weight: 800; 
+}
+
+.logo-nav img{
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    }
+
+.nav-links{ 
+    list-style: none; 
+    display: flex; gap: 16px; 
+    margin: 0 0 0 auto; padding: 0; 
+}
+
+.nav-links a{
+    color: var(--text-2); 
+    text-decoration: none; 
+    padding: 8px 10px; 
+    border-radius: 10px;
+}
+
+.nav-links a:hover{ 
+    background: rgba(255,255,255,.06); 
+    color: var(--text); 
+}
+
+.btn-whatsapp{
+    background: #25D366;
+    color: #002; 
+    text-decoration: none;
+    padding: 8px 12px; 
+    border-radius: 12px; 
+    font-weight: 700;
+}
+
+/* ----------------- filtro ----------------- */
+.segundo{ 
+    max-width: 1200px; 
+    margin: auto; 
+    padding: 32px 16px 24px;  
+}
+
+.segundo h1{ 
+    font-family: Orbitron, sans-serif; 
+    font-size: clamp(26px, 4.5vw, 44px); 
+    margin: 0 0 8px; 
+    letter-spacing: .3px; 
+}
+
+.segundo p{ 
+    color: var(--text-2); 
+    margin: 0 0 16px; 
+}
+
+.filters{ 
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap; 
+}
+
+.filters input, .filters select{
+    background: var(--card);
+    border: 1px solid var(--border); 
+    color: var(--text);
+    padding: 12px 14px; 
+    border-radius: 12px; 
+    outline: none; min-width: 220px;
+}
+
+.btn-accent{
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    border: none; 
+    color: #001; 
+    font-weight: 800; 
+    padding: 12px 16px; 
+    border-radius: 12px; 
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(30,144,255,.25);
+}
+
+.btn-accent:hover{ 
+    filter: brightness(1.05); 
+    transform: translateY(-1px); 
+}
+
+.btn-accent:active{ 
+    transform: translateY(0); 
+}
+
+/* ----------------- Secciones ----------------- */
+.section{ 
+    max-width: 1200px; 
+    margin: auto; 
+    padding: 28px 16px 24px; 
+    display: flex;
+    flex-direction: column;
+}
+
+.section-alt{ 
+    background: radial-gradient(1000px 520px at 50% -10%, rgba(57,255,20,.07), transparent 60%); 
+}
+
+.section-title{ 
+    font-family: Orbitron, sans-serif; 
+    font-size: clamp(20px, 3.2vw, 32px); 
+    margin: 0 0 6px; 
+}
+
+.section-subtitle{ 
+    color: var(--text-2); 
+    margin: 0 0 20px; }
+
+/* ----------------- Grid y Cards ----------------- */
+#Productos .grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+@media (min-width: 1200px) {
+  #productos .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+.card{
+    background: var(--card-2); 
+    border: 1px solid var(--border);
+    border-radius: var(--radius); 
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.media{ 
+    aspect-ratio: 4 / 3; 
+    background:#0a0c10; 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+}
+
+.media img{ 
+    max-width: 92%; 
+    max-height: 92%; 
+    object-fit: contain; 
+}
+
+.content{ 
+    padding: 14px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+}
+
+.badge{ 
+    display: inline-block; 
+    font-size: 12px; 
+    color:#001; 
+    background: var(--green); 
+    padding: 4px 8px; 
+    border-radius: 999px; 
+    font-weight: 800; 
+}
+
+.price{ 
+    font-weight: 800; 
+    color: var(--blue); 
+}
+
+.meta{ 
+    color: var(--text-2); 
+    font-size: 12px; 
+}
+
+/* Posts cortos */
+.card-post{ 
+    background: var(--card-2); 
+    border: 1px solid var(--border); 
+    border-radius: var(--radius); 
+    padding: 18px; 
+}
+
+.card-post h3{ 
+    margin: 0 0 8px; 
+    font-family: Orbitron, sans-serif; 
+}
+
+.card-post .link{
+    color: var(--blue); 
+    text-decoration: none; 
+}
+
+/* ----------------- Mapa y eventos ----------------- */
+.map{ 
+    width: 100%; 
+    height: 420px; 
+    border-radius: 16px; 
+    border: 1px solid var(--border); 
+    background:#0a0c10; 
+}
+
+.event-list{ 
+    margin-top: 12px; 
+    display: grid; 
+    gap: 8px; 
+}
+
+.event-list .event-item{ 
+    background: var(--card); 
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    padding: 10px 12px; 
+}
+
+/* ----------------- Formulario ----------------- */
+.form{ 
+    display: grid;
+    gap: 12px; 
+    max-width: 680px;
+}
+
+.field{ 
+    display: grid; 
+    gap: 6px; 
+}
+
+.field label{ 
+    font-weight: 600; 
+}
+
+.field input, .field textarea{
+    background: var(--card); 
+    border: 1px solid var(--border); 
+    color: var(--text);
+    padding: 12px 14px; 
+    border-radius: 12px; 
+    outline: none;
+}
+
+.field textarea{ 
+    min-height: 110px; 
+    resize: vertical; 
+}
+
+.hint{ 
+    color: var(--text-2); 
+    font-size: 12px; 
+}
+
+.error{ 
+    color: #ff6b6b; 
+    font-size: 12px; 
+    min-height: 14px; 
+}
+
+/* Botón outline con texto negro (pedido) */
+.btn-outline{
+    border: 1px solid var(--blue);
+    color: #000; 
+    background: #fff;
+    text-decoration: none; 
+    padding: 12px 16px; 
+    border-radius: 12px; 
+    display: inline-block;
+}
+
+
+.footer{ 
+    text-align: center; 
+    color: var(--text-2); 
+    padding: 32px 16px; 
+    border-top: 1px solid var(--border); 
+}
+
+
+.hidden{ 
+    display: none !important; 
+}
+
+
+@media (max-width: 960px){
+    .nav-links{ display: none;
+    } /* simple: ocultar menú grande en móviles */
+}
