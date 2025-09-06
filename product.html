@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>LevelUp – Detalle</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="primero">
+    <nav class="nav">
+      <a class="logo-nav" href="index.html">
+        <img src="imagenes/Logo/LOGO.png" alt="LevelUp" />
+        <span>LevelUp</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#productos">Productos</a></li>
+        <li><a href="index.html#comunidad">Comunidad</a></li>
+        <li><a href="index.html#eventos">Eventos</a></li>
+        <li><a href="index.html#contacto">Soporte</a></li>
+      </ul>
+      <a id="cartBtn" class="btn-outline" href="index.html#productos">Carrito (0)</a>
+    </nav>
+  </header>
+
+  <main class="section">
+    <nav style="margin-bottom:12px;"><a class="btn-outline" href="index.html">← Volver</a></nav>
+    <div id="detail" class="detail-grid"></div>
+
+    <section class="section" style="padding-left:0;padding-right:0;">
+      <h2 class="section-title">Te puede interesar</h2>
+      <p class="section-subtitle">Productos de la misma categoría.</p>
+      <div id="recoGrid" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 LevelUp</p>
+  </footer>
+
+  <!-- Productos -->
+  <script src="data.js"></script>
+
+  <!-- Script de detalle -->
+  <script>
+    const CLP = v => Number(v).toLocaleString("es-CL",{style:"currency",currency:"CLP"});
+    const qs = new URLSearchParams(location.search);
+    const code = qs.get("code");
+    const product = window.PRODUCTS.find(p => p.code === code);
+    const detail = document.getElementById("detail");
+    const recoGrid = document.getElementById("recoGrid");
+
+    function getCart(){ try{ return JSON.parse(localStorage.getItem("lu_cart")||"[]"); }catch{ return []; } }
+    function setCart(c){ localStorage.setItem("lu_cart", JSON.stringify(c)); updateCartBadge(); }
+    function updateCartBadge(){
+      const n = getCart().reduce((a,i)=>a+i.qty,0);
+      document.getElementById("cartBtn").textContent = `Carrito (${n})`;
+    }
+    updateCartBadge();
+
+    if(!product){
+      detail.innerHTML = "<p>No se encontró el producto.</p>";
+    } else {
+      const images = product.images.length ? product.images : ["https://via.placeholder.com/800x600?text=Sin+imagen"];
+
+      detail.innerHTML = `
+        <div class="card" style="padding:14px;">
+          <div class="gallery">
+            <div class="gallery-main"><img id="mainImg" src="${images[0]}" alt="${product.name}"></div>
+            <div class="thumbs" id="thumbs">
+              ${images.map((src,i)=>`<img src="${src}" data-src="${src}" class="${i===0?'active':''}">`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:18px;">
+          <h1 style="margin:0 0 6px; font-family:Orbitron;">${product.name}</h1>
+          <div class="badge">${product.category}</div>
+          <p class="price" style="font-size:22px; margin:10px 0;">${CLP(product.price)}</p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 14px;">
+            <span class="chip">Código: ${product.code}</span>
+            ${product.year? `<span class="chip">Año: ${product.year}</span>` : ""}
+          </div>
+          <h3>Descripción</h3>
+          <p style="color:var(--text-2)">${product.description}</p>
+          <h3>Origen de Productos</h3>
+          <ul style="color:var(--text-2); padding-left:18px;">
+            <li><b>Fabricante:</b> ${product.origin.manufacturer}</li>
+            <li><b>Distribuidor:</b> ${product.origin.distributor}</li>
+          </ul>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
+            <button id="btnAdd" class="btn-accent">Agregar al carrito</button>
+            <button id="btnShare" class="btn-outline">Compartir</button>
+          </div>
+        </div>
+      `;
+
+      // miniaturas
+      const mainImg = document.getElementById("mainImg");
+      const thumbs = document.getElementById("thumbs");
+      thumbs.addEventListener("click", e=>{
+        if(e.target.tagName==="IMG"){
+          mainImg.src = e.target.dataset.src;
+          thumbs.querySelectorAll("img").forEach(i=>i.classList.remove("active"));
+          e.target.classList.add("active");
+        }
+      });
+
+      // carrito
+      document.getElementById("btnAdd").addEventListener("click", ()=>{
+        const cart = getCart();
+        const idx = cart.findIndex(i=>i.code===product.code);
+        if(idx>=0){ cart[idx].qty++; }
+        else{ cart.push({code:product.code,name:product.name,price:product.price,img:images[0],qty:1}); }
+        setCart(cart);
+        alert(`Agregado: ${product.name}`);
+      });
+
+      // compartir
+      document.getElementById("btnShare").addEventListener("click", ()=>{
+        const url = location.href;
+        if(navigator.share){
+          navigator.share({title:product.name,text:"Mira este producto LevelUp",url});
+        } else {
+          prompt("Copia el enlace:", url);
+        }
+      });
+
+      // recomendaciones
+      const recos = window.PRODUCTS.filter(p=>p.category===product.category && p.code!==product.code).slice(0,6);
+      recos.forEach(p=>{
+        const el=document.createElement("article");
+        el.className="card";
+        el.innerHTML=`
+          <div class="media"><img src="${p.images[0]}" alt="${p.name}"></div>
+          <div class="content"><span class="badge">${p.category}</span><h3><a href="product.html?code=${p.code}">${p.name}</a></h3><div class="price">${CLP(p.price)}</div></div>`;
+        recoGrid.appendChild(el);
+      });
+    }
+  </script>
+</body>
+</html>
