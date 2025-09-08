@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LevelUp – Detalle</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="primero">
     <nav class="nav">
@@ -43,24 +47,24 @@
   <!-- Productos -->
   <script src="data.js"></script>
 
-  <!-- Script de detalle -->
+  <!-- Script de detalle (TU LÓGICA, intacta) -->
   <script>
-    const CLP = v => Number(v).toLocaleString("es-CL",{style:"currency",currency:"CLP"});
+    const CLP = v => Number(v).toLocaleString("es-CL", { style: "currency", currency: "CLP" });
     const qs = new URLSearchParams(location.search);
     const code = qs.get("code");
     const product = window.PRODUCTS.find(p => p.code === code);
     const detail = document.getElementById("detail");
     const recoGrid = document.getElementById("recoGrid");
 
-    function getCart(){ try{ return JSON.parse(localStorage.getItem("lu_cart")||"[]"); }catch{ return []; } }
-    function setCart(c){ localStorage.setItem("lu_cart", JSON.stringify(c)); updateCartBadge(); }
-    function updateCartBadge(){
-      const n = getCart().reduce((a,i)=>a+i.qty,0);
+    function getCart() { try { return JSON.parse(localStorage.getItem("lu_cart") || "[]"); } catch { return []; } }
+    function setCart(c) { localStorage.setItem("lu_cart", JSON.stringify(c)); updateCartBadge(); }
+    function updateCartBadge() {
+      const n = getCart().reduce((a, i) => a + i.qty, 0);
       document.getElementById("cartBtn").textContent = `Carrito (${n})`;
     }
     updateCartBadge();
 
-    if(!product){
+    if (!product) {
       detail.innerHTML = "<p>No se encontró el producto.</p>";
     } else {
       const images = product.images.length ? product.images : ["https://via.placeholder.com/800x600?text=Sin+imagen"];
@@ -70,7 +74,7 @@
           <div class="gallery">
             <div class="gallery-main"><img id="mainImg" src="${images[0]}" alt="${product.name}"></div>
             <div class="thumbs" id="thumbs">
-              ${images.map((src,i)=>`<img src="${src}" data-src="${src}" class="${i===0?'active':''}">`).join('')}
+              ${images.map((src, i) => `<img src="${src}" data-src="${src}" class="${i === 0 ? 'active' : ''}">`).join('')}
             </div>
           </div>
         </div>
@@ -81,7 +85,7 @@
           <p class="price" style="font-size:22px; margin:10px 0;">${CLP(product.price)}</p>
           <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 14px;">
             <span class="chip">Código: ${product.code}</span>
-            ${product.year? `<span class="chip">Año: ${product.year}</span>` : ""}
+            ${product.year ? `<span class="chip">Año: ${product.year}</span>` : ""}
           </div>
           <h3>Descripción</h3>
           <p style="color:var(--text-2)">${product.description}</p>
@@ -90,55 +94,484 @@
             <li><b>Fabricante:</b> ${product.origin.manufacturer}</li>
             <li><b>Distribuidor:</b> ${product.origin.distributor}</li>
           </ul>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;">
-            <button id="btnAdd" class="btn-accent">Agregar al carrito</button>
-            <button id="btnShare" class="btn-outline">Compartir</button>
-          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <button id="btnAdd" class="btn-accent">Agregar al carrito</button>
+
+          <!-- Cantidad a la derecha del botón -->
+          <label for="qty" style="display:flex; align-items:center; gap:6px;">
+            <span style="opacity:.8;">Cantidad</span>
+            <input id="qty" type="number" min="1" step="1" value="1"
+                   style="width:88px; padding:.4rem .5rem; border-radius:10px; border:1px solid var(--border,#444); background:var(--surface,#222); color:inherit;">
+          </label>
+        
+          <button id="btnShare" class="btn-outline">Compartir</button>
+        </div>
+
         </div>
       `;
 
       // miniaturas
       const mainImg = document.getElementById("mainImg");
       const thumbs = document.getElementById("thumbs");
-      thumbs.addEventListener("click", e=>{
-        if(e.target.tagName==="IMG"){
+      thumbs.addEventListener("click", e => {
+        if (e.target.tagName === "IMG") {
           mainImg.src = e.target.dataset.src;
-          thumbs.querySelectorAll("img").forEach(i=>i.classList.remove("active"));
+          thumbs.querySelectorAll("img").forEach(i => i.classList.remove("active"));
           e.target.classList.add("active");
         }
       });
 
       // carrito
-      document.getElementById("btnAdd").addEventListener("click", ()=>{
+      const qtyInput = document.getElementById("qty");
+      document.getElementById("btnAdd").addEventListener("click", () => {
+        const addQty = Math.max(1, parseInt(qtyInput?.value, 10) || 1);
+
         const cart = getCart();
-        const idx = cart.findIndex(i=>i.code===product.code);
-        if(idx>=0){ cart[idx].qty++; }
-        else{ cart.push({code:product.code,name:product.name,price:product.price,img:images[0],qty:1}); }
+        const idx = cart.findIndex(i => i.code === product.code);
+        if (idx >= 0) {
+          cart[idx].qty = (Number(cart[idx].qty) || 0) + addQty;
+          cart[idx].cantidad = cart[idx].qty; // espejo para el modal futuro
+        } else {
+          cart.push({
+            code: product.code,
+            name: product.name,
+            price: product.price,
+            img: images[0],
+            qty: addQty,
+            cantidad: addQty
+          });
+        }
         setCart(cart);
-        alert(`Agregado: ${product.name}`);
+        alert(`Agregado: ${product.name} × ${addQty}`);
       });
 
       // compartir
-      document.getElementById("btnShare").addEventListener("click", ()=>{
+      document.getElementById("btnShare").addEventListener("click", () => {
         const url = location.href;
-        if(navigator.share){
-          navigator.share({title:product.name,text:"Mira este producto LevelUp",url});
+        if (navigator.share) {
+          navigator.share({ title: product.name, text: "Mira este producto LevelUp", url });
         } else {
           prompt("Copia el enlace:", url);
         }
       });
 
       // recomendaciones
-      const recos = window.PRODUCTS.filter(p=>p.category===product.category && p.code!==product.code).slice(0,6);
-      recos.forEach(p=>{
-        const el=document.createElement("article");
-        el.className="card";
-        el.innerHTML=`
+      const recos = window.PRODUCTS.filter(p => p.category === product.category && p.code !== product.code).slice(0, 6);
+      recos.forEach(p => {
+        const el = document.createElement("article");
+        el.className = "card";
+        el.innerHTML = `
           <div class="media"><img src="${p.images[0]}" alt="${p.name}"></div>
           <div class="content"><span class="badge">${p.category}</span><h3><a href="product.html?code=${p.code}">${p.name}</a></h3><div class="price">${CLP(p.price)}</div></div>`;
         recoGrid.appendChild(el);
       });
     }
   </script>
+
+  <!-- Modal bonito para reemplazar alert() -->
+  <dialog id="cartDialog">
+    <form method="dialog" class="modal">
+      <h3 id="cartDialogTitle">Estado</h3>
+      <p id="cartDialogMsg"></p>
+      <div class="actions">
+        <button class="btn-accent">OK</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Reemplazo no-invasivo de alert() por el modal -->
+  <script>
+    (function () {
+      const dlg = document.getElementById('cartDialog');
+      const h3 = document.getElementById('cartDialogTitle');
+      const msg = document.getElementById('cartDialogMsg');
+
+      function showDialog(title, text) {
+        if (!dlg) return window.alert(text);
+        h3.textContent = title || 'Mensaje';
+        msg.textContent = text || '';
+        dlg.showModal();
+      }
+
+      const nativeAlert = window.alert;
+      window.alert = function (text) {
+        if (typeof text === 'string' && text.trim().toLowerCase().startsWith('agregado:')) {
+          showDialog('Agregado al carrito', text);
+        } else {
+          showDialog('Mensaje', String(text));
+        }
+      };
+
+      // cerrar al click fuera
+      dlg?.addEventListener('click', (e) => {
+        const r = dlg.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!inside) dlg.close();
+      });
+    })();
+  </script>
+
+  <!-- Refuerzo de carrito (sin tocar tu lógica) -->
+  <script>
+    (function () {
+      function getCart() {
+        try { return JSON.parse(localStorage.getItem("lu_cart") || "[]"); }
+        catch { return []; }
+      }
+      function setCartRaw(c) {
+        localStorage.setItem("lu_cart", JSON.stringify(c));
+      }
+      function updateCartBadge() {
+        const btn = document.getElementById("cartBtn");
+        if (!btn) return;
+        const n = getCart().reduce((a, i) => a + (Number(i?.qty) || 0), 0);
+        btn.textContent = `Carrito (${n})`;
+      }
+
+      // Sanea lo que haya (qty/price a número)
+      const cleaned = getCart().map(i => ({
+        ...i,
+        qty: Number(i?.qty) || 0,
+        price: Number(i?.price) || 0
+      }));
+      setCartRaw(cleaned);
+
+      // Badge ahora y en cambios de otras pestañas
+      updateCartBadge();
+      window.addEventListener('storage', e => {
+        if (e.key === 'lu_cart') updateCartBadge();
+      });
+    })();
+  </script>
+  <!-- Drawer de Carrito -->
+  <dialog id="cartDrawer" class="cart-drawer" aria-labelledby="cartTitle">
+    <section class="cart-panel">
+      <header class="cart-head">
+        <div class="cart-title" id="cartTitle">Tu carrito <span id="cartCount">(0)</span></div>
+        <button id="cartClose" class="btn-outline" style="padding:.35rem .6rem;">Cerrar ✕</button>
+      </header>
+
+      <div id="cartBody" class="cart-body">
+        <div class="cart-empty" id="cartEmpty">Tu carrito está vacío.</div>
+        <!-- items se renderizan aquí -->
+      </div>
+
+      <footer class="cart-footer">
+        <div class="cart-summary">
+          <div>Total</div>
+          <div id="cartTotal" class="price">$0</div>
+        </div>
+        <div class="cart-actions">
+          <a id="cartContinue" class="btn-outline" href="index.html#productos">Seguir comprando</a>
+          <button id="cartCheckout" class="btn-accent">Finalizar compra</button>
+        </div>
+      </footer>
+    </section>
+  </dialog>
+  <script>
+    (function () {
+      // Helpers (no toco tus funciones previas)
+      const CLP = v => Number(v || 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" });
+      const drawer = document.getElementById('cartDrawer');
+      const cartBtn = document.getElementById('cartBtn');
+      const closeBtn = document.getElementById('cartClose');
+      const bodyEl = document.getElementById('cartBody');
+      const emptyEl = document.getElementById('cartEmpty');
+      const totalEl = document.getElementById('cartTotal');
+      const countEl = document.getElementById('cartCount');
+      const checkout = document.getElementById('cartCheckout');
+
+      function getCart() { try { return JSON.parse(localStorage.getItem("lu_cart") || "[]"); } catch { return []; } }
+      function setCart(c) { localStorage.setItem("lu_cart", JSON.stringify(c)); updateBadge(); }
+      function updateBadge() {
+        const n = getCart().reduce((a, i) => a + (Number(i.qty) || 0), 0);
+        const btn = document.getElementById('cartBtn');
+        if (btn) btn.textContent = `Carrito (${n})`;
+        if (countEl) countEl.textContent = `(${n})`;
+      }
+
+      function render() {
+        const cart = getCart();
+        bodyEl.querySelectorAll('.cart-item').forEach(n => n.remove());
+
+        if (!cart.length) {
+          emptyEl.style.display = 'block';
+          totalEl.textContent = CLP(0);
+          updateBadge();
+          return;
+        }
+        emptyEl.style.display = 'none';
+
+        let total = 0;
+        cart.forEach(item => {
+          const qty = Number(item.qty) || 0;
+          const price = Number(item.price) || 0;
+          total += qty * price;
+
+          const row = document.createElement('div');
+          row.className = 'cart-item';
+          row.dataset.code = item.code;
+
+          row.innerHTML = `
+        <img src="${item.img || 'https://via.placeholder.com/200x200?text=Sin+imagen'}" alt="${item.name}">
+        <div class="ci-body">
+          <a class="ci-name" href="product.html?code=${item.code}">${item.name}</a>
+          <div class="ci-meta">Precio unitario: ${CLP(price)}</div>
+          <div class="ci-controls">
+            <div class="qty-wrap">
+              <button class="qty-btn minus" aria-label="Disminuir">−</button>
+              <input class="qty-input" type="number" min="1" step="1" value="${qty}">
+              <button class="qty-btn plus" aria-label="Aumentar">+</button>
+            </div>
+            <span class="ci-subtotal">Subtotal: ${CLP(qty * price)}</span>
+            <button class="ci-remove">Quitar</button>
+          </div>
+        </div>
+      `;
+          bodyEl.appendChild(row);
+        });
+
+        totalEl.textContent = CLP(total);
+        updateBadge();
+      }
+
+      // Delegación de eventos para +/−/input/Quitar
+      bodyEl.addEventListener('click', (e) => {
+        const row = e.target.closest('.cart-item');
+        if (!row) return;
+        const code = row.dataset.code;
+        let cart = getCart();
+        const idx = cart.findIndex(i => i.code === code);
+        if (idx < 0) return;
+
+        if (e.target.classList.contains('plus')) {
+          cart[idx].qty = (Number(cart[idx].qty) || 0) + 1;
+          cart[idx].cantidad = cart[idx].qty;
+          setCart(cart); render();
+        }
+        if (e.target.classList.contains('minus')) {
+          const next = (Number(cart[idx].qty) || 0) - 1;
+          if (next <= 0) { cart.splice(idx, 1); } else { cart[idx].qty = next; cart[idx].cantidad = next; }
+          setCart(cart); render();
+        }
+        if (e.target.classList.contains('ci-remove')) {
+          cart.splice(idx, 1);
+          setCart(cart); render();
+        }
+      });
+
+      bodyEl.addEventListener('change', (e) => {
+        if (!e.target.classList.contains('qty-input')) return;
+        const row = e.target.closest('.cart-item'); if (!row) return;
+        const code = row.dataset.code;
+        let cart = getCart();
+        const idx = cart.findIndex(i => i.code === code);
+        if (idx < 0) return;
+        let val = parseInt(e.target.value, 10);
+        if (!Number.isFinite(val) || val < 1) val = 1;
+        cart[idx].qty = val;
+        cart[idx].cantidad = val;
+        setCart(cart); render();
+      });
+
+      // Abrir/cerrar
+      cartBtn?.addEventListener('click', (e) => { e.preventDefault(); render(); drawer.showModal(); });
+      closeBtn?.addEventListener('click', () => drawer.close());
+      drawer?.addEventListener('click', (e) => {
+        const r = drawer.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!inside) drawer.close();
+      });
+
+      // Finalizar compra (placeholder por ahora)
+      checkout?.addEventListener('click', () => {
+        const cart = getCart();
+        if (!cart.length) { alert('Tu carrito está vacío'); return; }
+        const total = cart.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.price) || 0), 0);
+        alert(`Pedido listo para checkout. Total: ${CLP(total)}`);
+        // más adelante: redirigir a checkout.html o flujo de pago
+      });
+
+      // Sync si cambia en otra pestaña
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'lu_cart') { render(); updateBadge(); }
+      });
+    })();
+  </script>
+
 </body>
+<style>
+  /* Drawer carrito */
+  dialog.cart-drawer::backdrop {
+    background: rgba(0, 0, 0, .5);
+  }
+
+  dialog.cart-drawer {
+    border: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 480px;
+    /* ancho del drawer en desktop */
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+    transition: transform .25s ease-out;
+    background: var(--surface, #17171a);
+    color: inherit;
+  }
+
+  dialog.cart-drawer[open] {
+    transform: translateX(0);
+  }
+
+  .cart-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .cart-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border, #2a2a2e);
+  }
+
+  .cart-title {
+    font-family: Orbitron, sans-serif;
+    font-size: 1.1rem;
+  }
+
+  .cart-body {
+    overflow: auto;
+    padding: 12px 12px 0 12px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-empty {
+    text-align: center;
+    opacity: .8;
+    padding: 48px 16px;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid var(--border, #2a2a2e);
+    border-radius: 12px;
+    background: var(--surface-2, #1f1f23);
+  }
+
+  .cart-item img {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .ci-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ci-name {
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ci-meta {
+    opacity: .8;
+    font-size: .9rem;
+  }
+
+  .ci-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .qty-wrap {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border, #2a2a2e);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .qty-btn {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .qty-input {
+    width: 54px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: inherit;
+    height: 32px;
+    appearance: textfield;
+  }
+
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .ci-subtotal {
+    margin-left: auto;
+    font-weight: 600;
+  }
+
+  .ci-remove {
+    background: transparent;
+    border: 1px solid var(--border, #2a2a2e);
+    border-radius: 10px;
+    padding: .35rem .6rem;
+    cursor: pointer;
+  }
+
+  .cart-footer {
+    border-top: 1px solid var(--border, #2a2a2e);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cart-actions .btn-accent,
+  .cart-actions .btn-outline {
+    flex: 1;
+    text-align: center;
+  }
+</style>
+
 </html>
