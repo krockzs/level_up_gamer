@@ -212,8 +212,8 @@ body {
 }
 
 .media img {
-    max-width: 92%;
-    max-height: 92%;
+    max-width:100%;
+    max-height: 100%;
     object-fit: contain;
 }
 

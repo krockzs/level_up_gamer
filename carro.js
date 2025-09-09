@@ -1,4 +1,4 @@
-/* carro.js — solo JS, misma lógica */
+
 
 /* Refuerzo de carrito (product.html) */
 (function () {

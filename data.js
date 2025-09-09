@@ -159,5 +159,24 @@ window.PRODUCTS = [
     ],
     origin:{ manufacturer:"LevelUp", distributor:"Impresiones Chile" },
     description:"Polera gamer cómoda y personalizable con tu gamer tag."
+  },
+  {
+    code:"PS001",
+    category:"Polerones Gamers Personalizados",
+    name:"Polerones Personalizados",
+    price:14990,
+    year:2023,
+    images:[
+        "imagenes/PoleronesGamersPersonalizados/perso1.avif",
+        "imagenes/PoleronesGamersPersonalizados/perso2.avif",
+        "imagenes/PoleronesGamersPersonalizados/perso3.avif",
+        "imagenes/PoleronesGamersPersonalizados/perso4.avif",
+        "imagenes/PoleronesGamersPersonalizados/perso5.avif"
+    ],
+    origin:{ manufacturer:"LevelUp", distributor:"Impresiones Chile" },
+    description:"Polerones gamer cómodos y personalizable con tu gamer tag."
   }
 ];
+
+
+
