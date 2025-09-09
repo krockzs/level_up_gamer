@@ -644,3 +644,21 @@ dialog.cart-drawer[open] {
     flex: 1;
     text-align: center;
 }
+/* === Blog images forced size (percentage) === */
+/* Use on <img id="imagen-noticias">, <img id="imagen-comunidad">, <img id="imagen-guias"> */
+img#imagen-noticias,
+img#imagen-comunidad,
+img#imagen-guias{
+  width: 60%;
+  height: auto;   /* mantener proporción */
+  display: block;
+}
+
+/* Fallback por carpeta (por si olvidas el id): aplica a imágenes dentro de tarjetas del blog */
+.card-post img[src*="/noticias/"],
+.card-post img[src*="/guias/"],
+.card-post img[src*="/comunidad/"]{
+  width: 60%;
+  height: auto;
+  display: block;
+}

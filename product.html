@@ -180,69 +180,10 @@
   </dialog>
 
   <!-- Reemplazo no-invasivo de alert() por el modal -->
-  <script>
-    (function () {
-      const dlg = document.getElementById('cartDialog');
-      const h3 = document.getElementById('cartDialogTitle');
-      const msg = document.getElementById('cartDialogMsg');
-
-      function showDialog(title, text) {
-        if (!dlg) return window.alert(text);
-        h3.textContent = title || 'Mensaje';
-        msg.textContent = text || '';
-        dlg.showModal();
-      }
-
-      const nativeAlert = window.alert;
-      window.alert = function (text) {
-        if (typeof text === 'string' && text.trim().toLowerCase().startsWith('agregado:')) {
-          showDialog('Agregado al carrito', text);
-        } else {
-          showDialog('Mensaje', String(text));
-        }
-      };
-
-      // cerrar al click fuera
-      dlg?.addEventListener('click', (e) => {
-        const r = dlg.getBoundingClientRect();
-        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-        if (!inside) dlg.close();
-      });
-    })();
-  </script>
+  
 
   <!-- Refuerzo de carrito (sin tocar tu lógica) -->
-  <script>
-    (function () {
-      function getCart() {
-        try { return JSON.parse(localStorage.getItem("lu_cart") || "[]"); }
-        catch { return []; }
-      }
-      function setCartRaw(c) {
-        localStorage.setItem("lu_cart", JSON.stringify(c));
-      }
-      function updateCartBadge() {
-        const btn = document.getElementById("cartBtn");
-        if (!btn) return;
-        const n = getCart().reduce((a, i) => a + (Number(i?.qty) || 0), 0);
-        btn.textContent = `Carrito (${n})`;
-      }
-
-      // Sanea lo que haya (qty/price a número)
-      const cleaned = getCart().map(i => ({
-        ...i,
-        qty: Number(i?.qty) || 0,
-        price: Number(i?.price) || 0
-      }));
-      setCartRaw(cleaned);
-
-      // Badge ahora y en cambios de otras pestañas
-      updateCartBadge();
-      window.addEventListener('storage', e => {
-        if (e.key === 'lu_cart') updateCartBadge();
-      });
-    })();
-  </script>
+  
   <!-- Drawer de Carrito -->
   <dialog id="cartDrawer" class="cart-drawer" aria-labelledby="cartTitle">
     <section class="cart-panel">
@@ -399,6 +340,8 @@
     })();
   </script>
 
+  <script src="modal.js"></script>
+  <script src="carro.js"></script>
 </body>
 
 </html>
