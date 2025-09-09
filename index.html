@@ -255,137 +255,22 @@
     <footer class="footer">
         <p>© 2025 LevelUp. Hecho para la comunidad gamer en Chile.</p>
     </footer>
-    <script>
-        (function () {
-            const $ = sel => document.querySelector(sel);
-            const q = $('#q');
-            const cat = $('#category');
-            const btn = document.getElementById('btnSearch') || document.getElementById('btnShare');
+    
+    <dialog id="formDialog">
+    <form method="dialog" class="modal">
+        <h3 id="dialogTitle">Estado del envío</h3>
+        <p id="dialogMsg"></p>
+        <div class="actions">
+        <button class="btn-accent">Cerrar</button>
+        </div>
+    </form>
+    </dialog>
 
-            // Contenedor y tarjetas (acepta #productos o #Productos)
-            const container = document.getElementById('productos') || document.getElementById('Productos') || document;
-            const cards = Array.from(container.querySelectorAll('.card'));
-
-            // Normalizador (minúsculas y sin tildes)
-            function normalize(s) {
-                return (s || '')
-                    .toLowerCase()
-                    .normalize('NFD')
-                    .replace(/\p{Diacritic}/gu, '');
-            }
-
-            // Obtiene texto desde posibles nodos
-            function pickText(el, selectors) {
-                for (const sel of selectors) {
-                    const n = el.matches?.(sel) ? el : el.querySelector(sel);
-                    if (n && n.textContent) return n.textContent.trim();
-                }
-                return '';
-            }
-
-            // Lee datos de una tarjeta (con fallback si no hay data-*)
-            function readCard(card) {
-                const name = card.dataset.name || pickText(card, ['[data-field="name"]', 'h3', '.name', '.title']);
-                const code = card.dataset.code || pickText(card, ['[data-field="code"]', '.code']);
-                const category =
-                    card.dataset.category ||
-                    pickText(card, ['[data-field="category"]', '.badge', '.category', '[data-cat]']) ||
-                    'all';
-                return { name, code, category };
-            }
-
-            // Aplica filtro
-            function apply() {
-                const nq = normalize(q?.value);
-                const c = (cat?.value || 'all').trim();
-                cards.forEach(card => {
-                    const { name, code, category } = readCard(card);
-                    const matchText = !nq || normalize(name).includes(nq) || normalize(code).includes(nq);
-                    const matchCat = (c === 'all') || category === c;
-                    card.style.display = (matchText && matchCat) ? '' : 'none';
-                });
-            }
-
-            // Listeners
-            if (q) q.addEventListener('input', apply);
-            if (cat) cat.addEventListener('change', apply);
-            if (btn) btn.addEventListener('click', e => { e.preventDefault(); apply(); });
-            if (q) q.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); apply(); } });
-
-            // Primer pintado
-            apply();
-        })();
-    </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
 
-    <script>
-        (function () {
-            // 🎯 Eventos (puedes agregar más)
-            const LEVELUP_EVENTS = [
-                { name: 'Evento LevelUp', pts: 120, lat: -33.694039302686, lng: -71.21427093488575 }
-            ];
-
-            // 🗺️ Inicializa mapa
-            const map = L.map('map', { zoomControl: true });
-            const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contrib.',
-                maxZoom: 19
-            }).addTo(map);
-
-            // 📍 Marcadores + lista
-            const bounds = L.latLngBounds([]);
-            const list = document.getElementById('eventList');
-            list.innerHTML = '';
-
-            LEVELUP_EVENTS.forEach(ev => {
-                const pos = [ev.lat, ev.lng];
-                const marker = L.marker(pos).addTo(map).bindPopup(
-                    `<strong>${ev.name}</strong><br>Puntos: ${ev.pts}`
-                );
-
-                bounds.extend(pos);
-
-                // Item clickeable en la lista
-                const item = document.createElement('div');
-                item.className = 'event-item';
-                item.tabIndex = 0;
-                item.textContent = `${ev.name} — ${ev.pts} pts`;
-                item.addEventListener('click', () => {
-                    map.setView(pos, 15);
-                    marker.openPopup();
-                });
-                item.addEventListener('keypress', e => {
-                    if (e.key === 'Enter' || e.key === ' ') item.click();
-                });
-                list.appendChild(item);
-            });
-
-            // 📏 Ajusta vista
-            if (LEVELUP_EVENTS.length > 1) {
-                map.fitBounds(bounds, { padding: [24, 24] });
-            } else if (LEVELUP_EVENTS.length === 1) {
-                map.setView(bounds.getCenter(), 15);
-            } else {
-                // fallback: Santiago centro
-                map.setView([-33.45, -70.65], 12);
-            }
-        })();
-    </script>
-    <!-- Modal accesible -->
-<dialog id="formDialog">
-  <form method="dialog" class="modal">
-    <h3 id="dialogTitle">Estado del envío</h3>
-    <p id="dialogMsg"></p>
-    <div class="actions">
-      <button class="btn-accent">Cerrar</button>
-    </div>
-  </form>
-</dialog>
-
-
-
-  <script src="modal.js"></script>
+    <script src="modal.js"></script>
 </body>
 
 </html>
