@@ -69,59 +69,87 @@
     } else {
       const images = product.images.length ? product.images : ["https://via.placeholder.com/800x600?text=Sin+imagen"];
 
-      detail.innerHTML = `
-        <div class="card" style="padding:14px;">
-          <div class="gallery">
-            <div class="gallery-main"><img id="mainImg" src="${images[0]}" alt="${product.name}"></div>
-            <div class="thumbs" id="thumbs">
-              ${images.map((src, i) => `<img src="${src}" data-src="${src}" class="${i === 0 ? 'active' : ''}">`).join('')}
-            </div>
+    detail.innerHTML = `
+      <!-- Card Galería -->
+      <div class="card" style="padding:14px;">
+        <div class="gallery">
+          <div class="gallery-main"><img id="mainImg" src="${images[0]}" alt="${product.name}"></div>
+          <div class="thumbs" id="thumbs">
+            ${images.map((src, i) => `<img src="${src}" data-src="${src}" class="${i === 0 ? 'active' : ''}">`).join('')}
           </div>
         </div>
+      </div>
 
-        <div class="card" style="padding:18px;">
-          <h1 style="margin:0 0 6px; font-family:Orbitron;">${product.name}</h1>
-          <div class="badge">${product.category}</div>
-          <p class="price" style="font-size:22px; margin:10px 0;">${CLP(product.price)}</p>
+      <!-- Card Info del producto -->
+      <div class="card" style="padding:18px;">
+        <h1 style="margin:0 0 6px; font-family:Orbitron;">${product.name}</h1>
+        <div class="badge">${product.category}</div>
+        <p class="price" style="font-size:22px; margin:10px 0;">${CLP(product.price)}</p>
 
-          <!-- ⭐ Calificación (estrellitas) -->
-          <div id="ratingBlock" style="display:flex;align-items:center;gap:10px;margin:8px 0 14px;">
-            <div id="stars" role="radiogroup" aria-label="Calificación del producto" style="display:flex;gap:6px;cursor:pointer;font-size:22px;line-height:1;">
-              <span role="radio" aria-label="1 estrella" aria-checked="false" data-val="1">☆</span>
-              <span role="radio" aria-label="2 estrellas" aria-checked="false" data-val="2">☆</span>
-              <span role="radio" aria-label="3 estrellas" aria-checked="false" data-val="3">☆</span>
-              <span role="radio" aria-label="4 estrellas" aria-checked="false" data-val="4">☆</span>
-              <span role="radio" aria-label="5 estrellas" aria-checked="false" data-val="5">☆</span>
-            </div>
-            <small id="ratingMsg" style="opacity:.8;">Califica este producto</small>
+        <!-- ⭐ Calificación (estrellitas) -->
+        <div id="ratingBlock" style="display:flex;align-items:center;gap:10px;margin:8px 0 14px;">
+          <div id="stars" role="radiogroup" aria-label="Calificación del producto" 
+              style="display:flex;gap:6px;cursor:pointer;font-size:22px;line-height:1;">
+            <span role="radio" aria-label="1 estrella" aria-checked="false" data-val="1">☆</span>
+            <span role="radio" aria-label="2 estrellas" aria-checked="false" data-val="2">☆</span>
+            <span role="radio" aria-label="3 estrellas" aria-checked="false" data-val="3">☆</span>
+            <span role="radio" aria-label="4 estrellas" aria-checked="false" data-val="4">☆</span>
+            <span role="radio" aria-label="5 estrellas" aria-checked="false" data-val="5">☆</span>
           </div>
+          <small id="ratingMsg" style="opacity:.8;">Califica este producto</small>
+        </div>
 
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 14px;">
-            <span class="chip">Código: ${product.code}</span>
-            ${product.year ? `<span class="chip">Año: ${product.year}</span>` : ""}
-          </div>
-          <h3>Descripción</h3>
-          <p style="color:var(--text-2)">${product.description}</p>
-          <h3>Origen de Productos</h3>
-          <ul style="color:var(--text-2); padding-left:18px;">
-            <li><b>Fabricante:</b> ${product.origin.manufacturer}</li>
-            <li><b>Distribuidor:</b> ${product.origin.distributor}</li>
-          </ul>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 14px;">
+          <span class="chip">Código: ${product.code}</span>
+          ${product.year ? `<span class="chip">Año: ${product.year}</span>` : ""}
+        </div>
+
+        <h3>Descripción</h3>
+        <p style="color:var(--text-2)">${product.description}</p>
+
+        <h3>Origen de Productos</h3>
+        <ul style="color:var(--text-2); padding-left:18px;">
+          <li><b>Fabricante:</b> ${product.origin.manufacturer}</li>
+          <li><b>Distribuidor:</b> ${product.origin.distributor}</li>
+        </ul>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
           <button id="btnAdd" class="btn-accent">Agregar al carrito</button>
 
           <!-- Cantidad a la derecha del botón -->
           <label for="qty" style="display:flex; align-items:center; gap:6px;">
             <span style="opacity:.8;">Cantidad</span>
             <input id="qty" type="number" min="1" step="1" value="1"
-                   style="width:88px; padding:.4rem .5rem; border-radius:10px; border:1px solid var(--border,#444); background:var(--surface,#222); color:inherit;">
+                  style="width:88px; padding:.4rem .5rem; border-radius:10px; border:1px solid var(--border,#444); background:var(--surface,#222); color:inherit;">
           </label>
         
           <button id="btnShare" class="btn-outline">Compartir</button>
         </div>
+      </div>
 
-        </div>
-      `;
+      <!-- Card Reseñas (ocupa todo el ancho) -->
+      <div class="card" style="padding:18px; grid-column: 1 / -1;">
+        <h3>Reseñas</h3>
+        <div id="reviewSummary" class="review-summary"></div>
+
+        <form id="reviewForm" class="review-form">
+          <input id="reviewName" placeholder="Tu nombre (opcional)">
+          <input id="reviewText" required minlength="3" placeholder="Escribe tu reseña...">
+          <select id="reviewStars">
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★☆</option>
+            <option value="3">★★★☆☆</option>
+            <option value="2">★★☆☆☆</option>
+            <option value="1">★☆☆☆☆</option>
+          </select>
+          <button type="submit" class="btn-accent">Enviar</button>
+        </form>
+
+        <div id="reviewList" class="reviews"></div>
+      </div>
+`;
+
+      
 
       // miniaturas
       const mainImg = document.getElementById("mainImg");
@@ -146,6 +174,45 @@
             el.setAttribute('aria-checked', on && i === n - 1 ? 'true' : 'false');
           });
         }
+
+      (function(){
+        const KEY = `lu_reviews_${code}`;
+        const form = document.getElementById('reviewForm');
+        const list = document.getElementById('reviewList');
+
+        function load(){ try { return JSON.parse(localStorage.getItem(KEY)||'[]'); }catch{return[]} }
+        function save(arr){ localStorage.setItem(KEY, JSON.stringify(arr)); }
+
+        function render(){
+          const arr = load();
+          if(!arr.length){
+            list.innerHTML = "<p style='opacity:.7;'>No hay reseñas todavía.</p>";
+            return;
+          }
+          list.innerHTML = arr.map(r => `
+            <div class="review-card" style="display:flex;justify-content:space-between;align-items:center;
+                                            border:1px solid var(--border,#333);padding:6px 10px;margin:6px 0;border-radius:8px;">
+              <span>${r.text}</span>
+              <span style="color:gold;">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</span>
+            </div>`).join('');
+        }
+
+        form?.addEventListener('submit', e=>{
+          e.preventDefault();
+          const txt = document.getElementById('reviewText').value.trim();
+          const stars = parseInt(document.getElementById('reviewStars').value,10);
+          if(txt.length<3) return;
+          const arr = load();
+          arr.push({ text: txt, stars, date: new Date().toLocaleDateString() });
+          save(arr);
+          form.reset();
+          render();
+        });
+
+        render();
+      })();
+
+
 
         const stars = document.getElementById('stars');
         const msg = document.getElementById('ratingMsg');

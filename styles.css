@@ -637,3 +637,60 @@ dialog.cart-drawer[open] {
     flex: 1;
     text-align: center;
 }
+
+
+/* lo ultimo de reseñas */
+.review-summary {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* Asegura que reseñas aparezcan debajo del formulario */
+.review-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* Forzar que el bloque de reseñas se apile en vertical */
+.reviews {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.review-form input,
+.review-form select {
+  padding: .5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border, #444);
+  background: var(--surface, #222);
+  color: inherit;
+}
+
+.review-card {
+    width: 100%;
+  max-width: 600px;
+  background: var(--surface, #222);
+  border: 1px solid var(--border, #333);
+  padding: 10px;
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.review-card .review-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-card small {
+  display: block;
+  opacity: .7;
+  margin-bottom: 4px;
+}
+
+.review-stars {
+  color: gold;
+}
