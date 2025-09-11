@@ -1,0 +1,30 @@
+[
+  {
+    "id": "pedrito@duoc.cl",
+    "nombre": "Pedrito",
+    "email": "pedrito@duoc.cl",
+    "esDuoc": true,
+    "pass": "1234"
+  },
+  {
+    "id": "juan@duoc.cl",
+    "nombre": "Juan",
+    "email": "juan@duoc.cl",
+    "esDuoc": true,
+    "pass": "1234"
+  },
+  {
+    "id": "maria@gmail.com",
+    "nombre": "María",
+    "email": "maria@gmail.com",
+    "esDuoc": false,
+    "pass": "1234"
+  },
+  {
+    "id": "pablo@gmail.com",
+    "nombre": "Pablo",
+    "email": "pablo@gmail.com",
+    "esDuoc": false,
+    "pass": "1234"
+  }
+]

@@ -83,6 +83,19 @@
           <h1 style="margin:0 0 6px; font-family:Orbitron;">${product.name}</h1>
           <div class="badge">${product.category}</div>
           <p class="price" style="font-size:22px; margin:10px 0;">${CLP(product.price)}</p>
+
+          <!-- ⭐ Calificación (estrellitas) -->
+          <div id="ratingBlock" style="display:flex;align-items:center;gap:10px;margin:8px 0 14px;">
+            <div id="stars" role="radiogroup" aria-label="Calificación del producto" style="display:flex;gap:6px;cursor:pointer;font-size:22px;line-height:1;">
+              <span role="radio" aria-label="1 estrella" aria-checked="false" data-val="1">☆</span>
+              <span role="radio" aria-label="2 estrellas" aria-checked="false" data-val="2">☆</span>
+              <span role="radio" aria-label="3 estrellas" aria-checked="false" data-val="3">☆</span>
+              <span role="radio" aria-label="4 estrellas" aria-checked="false" data-val="4">☆</span>
+              <span role="radio" aria-label="5 estrellas" aria-checked="false" data-val="5">☆</span>
+            </div>
+            <small id="ratingMsg" style="opacity:.8;">Califica este producto</small>
+          </div>
+
           <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 14px;">
             <span class="chip">Código: ${product.code}</span>
             ${product.year ? `<span class="chip">Año: ${product.year}</span>` : ""}
@@ -120,6 +133,59 @@
           e.target.classList.add("active");
         }
       });
+
+      // ⭐ Lógica de estrellitas (rating)
+      (function () {
+        const KEY = 'lu_ratings';
+        function loadRatings() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } }
+        function saveRatings(obj) { localStorage.setItem(KEY, JSON.stringify(obj)); }
+        function paint(n) {
+          stars.querySelectorAll('span').forEach((el, i) => {
+            const on = i < n;
+            el.textContent = on ? '★' : '☆';
+            el.setAttribute('aria-checked', on && i === n - 1 ? 'true' : 'false');
+          });
+        }
+
+        const stars = document.getElementById('stars');
+        const msg = document.getElementById('ratingMsg');
+        const map = loadRatings();
+        const current = Number(map[code] || 0);
+        if (current > 0) {
+          paint(current);
+          if (msg) msg.textContent = `Tu calificación: ${current}/5`;
+        }
+
+        // hover visual
+        stars.addEventListener('mouseover', e => {
+          const v = Number(e.target?.dataset?.val || 0);
+          if (v) paint(v);
+        });
+        stars.addEventListener('mouseout', () => {
+          paint(Number(map[code] || 0));
+        });
+
+        // click para guardar
+        stars.addEventListener('click', e => {
+          const v = Number(e.target?.dataset?.val || 0);
+          if (!v) return;
+          map[code] = v;
+          saveRatings(map);
+          paint(v);
+          if (msg) msg.textContent = `Tu calificación: ${v}/5`;
+        });
+
+        // soporte teclado
+        stars.querySelectorAll('span').forEach(s => {
+          s.tabIndex = 0;
+          s.addEventListener('keydown', ev => {
+            if (ev.key === 'Enter' || ev.key === ' ') {
+              ev.preventDefault();
+              s.click();
+            }
+          });
+        });
+      })();
 
       // carrito
       const qtyInput = document.getElementById("qty");

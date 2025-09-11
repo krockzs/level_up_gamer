@@ -1,0 +1,78 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar sesión — LevelUp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="primero">
+    <nav class="nav">
+      <a class="logo-nav" href="index.html">
+        <img src="imagenes/Logo/LOGO.png" alt="LevelUp"/>
+        <span>LevelUp</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#productos">Productos</a></li>
+        <li><a href="index.html#comunidad">Comunidad</a></li>
+        <li><a href="index.html#eventos">Eventos</a></li>
+        <li><a href="index.html#contacto">Soporte</a></li>
+      </ul>
+      <div class="user-actions" style="display:flex; gap:10px; align-items:center;">
+        <span id="nav-usuario" class="badge">Invitado</span>
+        <a class="btn-outline" href="registro.html" id="btn-login">Registrarse</a>
+        <a class="btn-outline" href="perfil.html" id="btn-perfil">Perfil</a>
+        <button class="btn-outline" id="btn-logout" style="display:none;">Cerrar sesión</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="section">
+    <h1 class="section-title">Iniciar sesión</h1>
+    <p class="section-subtitle">Email y contraseña (para la demo, es <strong>1234</strong>).</p>
+
+    <form id="form-login" class="form" novalidate>
+      <div class="field">
+        <label for="log_email">Email</label>
+        <input id="log_email" name="email" type="email" required />
+        <small class="error"></small>
+      </div>
+
+      <div class="field">
+        <label for="log_pass">Contraseña</label>
+        <input id="log_pass" name="pass" type="password" required />
+        <small class="hint">Para todos: 1234</small>
+      </div>
+
+      <div class="actions" style="display:flex; gap:12px; align-items:center;">
+        <button type="submit" class="btn-accent">Entrar</button>
+        <a class="btn-outline" href="registro.html">Crear cuenta</a>
+        <a class="btn-outline" href="index.html">Volver a la tienda</a>
+      </div>
+
+      <p id="msg-login" role="status" style="margin-top:12px;"></p>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 LevelUp. Hecho para la comunidad gamer en Chile.</p>
+  </footer>
+
+  <!-- Fallback inline por si usas file:// y fetch falla -->
+  <script type="application/json" id="seed-usuarios">
+  [
+    {"id":"pedrito@duoc.cl","nombre":"Pedrito","email":"pedrito@duoc.cl","esDuoc":true,"pass":"1234"},
+    {"id":"juan@duoc.cl","nombre":"Juan","email":"juan@duoc.cl","esDuoc":true,"pass":"1234"},
+    {"id":"maria@gmail.com","nombre":"María","email":"maria@gmail.com","esDuoc":false,"pass":"1234"},
+    {"id":"pablo@gmail.com","nombre":"Pablo","email":"pablo@gmail.com","esDuoc":false,"pass":"1234"}
+  ]
+  </script>
+
+  <!-- Scripts -->
+  <script src="registro.js"></script> <!-- para pintar nav si ya tienes lógica ahí -->
+  <script src="login-json.js"></script>
+</body>
+</html>

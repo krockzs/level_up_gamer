@@ -1,0 +1,87 @@
+<!-- registro.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro — LevelUp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="primero">
+    <nav class="nav">
+      <a class="logo-nav" href="index.html">
+        <img src="imagenes/Logo/LOGO.png" alt="LevelUp"/>
+        <span>LevelUp</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#productos">Productos</a></li>
+        <li><a href="index.html#comunidad">Comunidad</a></li>
+        <li><a href="index.html#eventos">Eventos</a></li>
+        <li><a href="index.html#contacto">Soporte</a></li>
+      </ul>
+      <div class="user-actions" style="display:flex; gap:10px; align-items:center;">
+        <span id="nav-usuario" class="badge">Invitado</span>
+        <a class="btn-outline" href="login.html" id="btn-login">Iniciar sesión</a>
+        <a class="btn-outline" href="perfil.html" id="btn-perfil">Perfil</a>
+        <button class="btn-outline" id="btn-logout" style="display:none;">Cerrar sesión</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="section">
+    <h1 class="section-title">Crear cuenta</h1>
+    <p class="section-subtitle">Regístrate para ganar puntos LevelUp y obtener beneficios. Correos <strong>@duoc.cl</strong> obtienen <strong>20% de descuento de por vida</strong>.</p>
+
+    <form id="form-registro" class="form" novalidate>
+      <div class="field">
+        <label for="reg_nombre">Nombre</label>
+        <input id="reg_nombre" name="nombre" required minlength="2" maxlength="60" />
+        <small class="error"></small>
+      </div>
+
+      <div class="field">
+        <label for="reg_email">Email</label>
+        <input id="reg_email" name="email" type="email" required />
+        <small class="hint">Si es <code>@duoc.cl</code> tendrás 20% de descuento permanente.</small>
+        <small class="error"></small>
+      </div>
+
+      <div class="field">
+        <label for="reg_fechaNac">Fecha de nacimiento</label>
+        <input id="reg_fechaNac" name="fechaNac" type="date" required />
+        <small class="hint">Debes ser mayor de 18 años.</small>
+        <small class="error"></small>
+      </div>
+
+      <div class="field">
+        <label for="reg_pass">Contraseña (opcional)</label>
+        <input id="reg_pass" name="pass" type="password" minlength="4" />
+        <small class="hint">Solo para el ramo. Puedes dejarla vacía.</small>
+      </div>
+
+      <div class="field">
+        <label for="reg_referido">Código de referido (opcional)</label>
+        <input id="reg_referido" name="referido" placeholder="correo de tu referente" />
+        <small class="hint">Si tu referente existe, gana 50 pts.</small>
+      </div>
+
+      <div class="actions" style="display:flex; gap:12px; align-items:center;">
+        <button type="submit" class="btn-accent">Crear cuenta</button>
+        <a class="btn-outline" href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+      </div>
+
+      <p id="msg-registro" role="status" style="margin-top:12px;"></p>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 LevelUp. Hecho para la comunidad gamer en Chile.</p>
+  </footer>
+
+  <!-- Scripts de usuarios -->
+  <script src="registro.js"></script>
+  <script src="perfil.js"></script>
+</body>
+</html>
